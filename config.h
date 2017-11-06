@@ -28,10 +28,12 @@
 
 char *commands[] = {"@UTC", "@POS", "@SET", "@GET", "@NUM", "@BAT"};
 
+/*
 unsigned char msg1[] = "$$$";			   // Command Mode
 unsigned char msg2[] = "SF,1\r";		   // Factory Reset
 unsigned char msg3[] = "SN,BT20160625\r";  // Device Name
 unsigned char msg4[] = "SA,4\r";		   // Authentication Mode
 unsigned char msg5[] = "R,1\r";			   // Reboot
+*/
 
 #endif

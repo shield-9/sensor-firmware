@@ -1,13 +1,16 @@
 #include <16F1825.h>
 #include "config.h"
+#include "globals.h"
 //#include <input.c>
 #include "commands.h"
 #include "helper.h"
 
+/*
 int1 is_observing = FALSE;
-unsigned int total_obs = 0;
+unsigned int obs_count = 0;
 unsigned long long unixtime = 0;
 float latitude = 0.0, longitude = 0.0;
+*/
 
 void process(char *received);
 
@@ -46,24 +49,24 @@ void process(char *cmd) {
 	int1 has_args = 0;
 	char *args;
 
-	has_args = divide_data(received, args); // Example: @UTC,20150310,143211
+	has_args = divide_data(received, args);  // Example: @UTC,20150310,143211
 
 	if (is_equal(cmd, commands[0])) {  // @UTC
 		char *time;
-		divide_data(data, time); // = date, time
-		set_datetime(data, time);
+		divide_data(args, time);  // = date, time
+		set_datetime(args, time);
 		printf("\r\n%lu", unixtime);
 	} else if (is_equal(cmd, commands[1])) {  // @POS
 		char *lon;
-		divide_data(data, lon); // = lat, lon
-		set_obs_position(data, lon);
+		divide_data(args, lon);  // = lat, lon
+		set_obs_position(args, lon);
 		printf("\r\n%.5f %.5f", latitude, longitude);
 	} else if (is_equal(cmd, commands[2])) {  // @SET
 		toggle_obs_state();
 	} else if (is_equal(cmd, commands[3])) {  // @GET
 		print_obs_results();
 	} else if (is_equal(cmd, commands[4])) {  // @NUM
-		print_obs_total();
+		print_obs_count();
 	} else if (is_equal(cmd, commands[5])) {  // @BAT
 		// TODO: Implement battery telemetry service.
 	}

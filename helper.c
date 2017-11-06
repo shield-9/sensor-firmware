@@ -3,7 +3,7 @@
 int1 divide_data(char *s1, char *s2) {
 	for (int i = 0; s1[i] != '\0'; i++) {
 		if (s1[i] == ',') {
-			s1[i] = '\0'; // Replace "," to "\0",
+			s1[i] = '\0';  // Replace "," to "\0",
 
 			s2 = s1 + (i + 1);
 			return 1;
@@ -25,7 +25,9 @@ int1 is_equal(char *s1, char *s2) {
 	return 1;
 }
 
-int1 is_leap(long int y) { return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0; }
+int1 is_leap(long int y) {
+	return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+}
 
 float str_to_float(char *s) {
 	int i, j;

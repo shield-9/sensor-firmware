@@ -3,24 +3,23 @@
 
 void exec_observe(void) {
 	// Memory Full!
-	if (total_obs >= 127) return;
+	if (obs_count >= 127) return;
 
-	unsigned int depth, temp;
+	unsigned int data;
 
-	set_adc_channel(0);
-	delay_us(50);
-	temp = read_adc();
-
+	// Depth
 	set_adc_channel(1);
 	delay_us(50);
-	depth = read_adc();
+	data = read_adc();
+	set_obs_depth(obs_count, data);
 
-	total_obs++;
-	write_eeprom(0, total_obs);
-	write_eeprom(total_obs * 2 - 1, depth);
-	write_eeprom(total_obs * 2, temp);
+	// Temp
+	set_adc_channel(0);
+	delay_us(50);
+	data = read_adc();
+	set_obs_temp(obs_count, data);
 
-	// printf("\r\n%u. Pressure:%u Temperature:%u", total_obs, depth, temp);
+	// printf("\r\n%u. Pressure:%u Temperature:%u", obs_count, depth, temp);
 }
 
 void set_datetime(char *date, char *time) {
@@ -102,7 +101,7 @@ int1 toggle_obs_state(void) {
 void start_obs(void) {
 	is_observing = TRUE;
 
-	total_obs = 0;
+	obs_count = 0;
 	PORTC = 0x0B;
 }
 
@@ -112,18 +111,19 @@ void stop_obs(void) {
 	PORTC = 0x03;
 }
 
-void print_obs_result(void) {
+void print_obs_results(void) {
 	printf("\r\n[Time:%lu Lat:%.5f Lon:%.5f]", unixtime, latitude, longitude);
 
-	total_obs = read_eeprom(0);
-	for (unsigned int i = 1; i <= total_obs; i++) {
-		unsigned int p = read_eeprom(i * 2 - 1);
-		unsigned int t = read_eeprom(i * 2);
+	for (unsigned int i = 0; i < obs_count; i++) {
+		unsigned int p = get_obs_depth(i);
+		unsigned int t = get_obs_temp(i);
 		printf("\r\n%u. Pressure:%u Temperature:%u", i, p, t);
 	}
 }
 
-void print_obs_count(void) {
-	total_obs = read_eeprom(0);
-	printf("\r\n%u", total_obs);
+void increment_obs_count(void) {
+	obs_count++;
+	set_obs_count(obs_count);
 }
+
+void print_obs_count(void) { printf("\r\n%u", obs_count); }
