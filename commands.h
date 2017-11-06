@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#define get_total_obs() read_eeprom(0)
-#define set_total_obs(x) write_eeprom(0, x)
+#define get_obs_count() read_eeprom(0)
+#define set_obs_count(x) write_eeprom(0, x)
 #define get_obs_temp(x) read_eeprom((x + 1) * 2)
 #define set_obs_temp(x, y) write_eeprom((x + 1) * 2, y)
 #define get_obs_depth(x) read_eeprom((x)*2 + 1)

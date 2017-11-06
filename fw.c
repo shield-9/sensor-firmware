@@ -2,15 +2,8 @@
 #include "config.h"
 #include "globals.h"
 //#include <input.c>
-#include "commands.h"
-#include "helper.h"
-
-/*
-int1 is_observing = FALSE;
-unsigned int obs_count = 0;
-unsigned long long unixtime = 0;
-float latitude = 0.0, longitude = 0.0;
-*/
+#include "commands.c"
+#include "helper.c"
 
 void process(char *received);
 
@@ -49,7 +42,7 @@ void process(char *cmd) {
 	int1 has_args = 0;
 	char *args;
 
-	has_args = divide_data(received, args);  // Example: @UTC,20150310,143211
+	has_args = divide_data(cmd, args);  // Example: @UTC,20150310,143211
 
 	if (is_equal(cmd, commands[0])) {  // @UTC
 		char *time;
