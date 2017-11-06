@@ -3,7 +3,7 @@
 
 void exec_observe(void) {
 	// Memory Full!
-	if (total_observations >= 127) return;
+	if (total_obs >= 127) return;
 
 	unsigned int depth, temp;
 
@@ -15,12 +15,12 @@ void exec_observe(void) {
 	delay_us(50);
 	depth = read_adc();
 
-	total_observations++;
-	write_eeprom(0, total_observations);
-	write_eeprom(total_observations * 2 - 1, depth);
-	write_eeprom(total_observations * 2, temp);
+	total_obs++;
+	write_eeprom(0, total_obs);
+	write_eeprom(total_obs * 2 - 1, depth);
+	write_eeprom(total_obs * 2, temp);
 
-	// printf("\r\n%u. Pressure:%u Temperature:%u", total_observations, depth, temp);
+	// printf("\r\n%u. Pressure:%u Temperature:%u", total_obs, depth, temp);
 }
 
 void set_datetime(char *date, char *time) {
@@ -81,16 +81,16 @@ unsigned long long calc_unixtime(long int year, int month, int day, int hour,
 	return total;
 }
 
-void set_observation_position(char *lat, char *lon) {
+void set_obs_position(char *lat, char *lon) {
 	latitude = str_to_float(lat);
 	longitude = str_to_float(lon);
 }
 
-void start_observation(void) {
+void start_obs(void) {
 	is_observing = !is_observing;
 
 	if (is_observing) {
-		total_observations = 0;
+		total_obs = 0;
 		PORTC = 0x0B;
 
 		printf("\r\nObservation Started.");
@@ -101,20 +101,20 @@ void start_observation(void) {
 	}
 }
 
-void print_observation_result(void) {
+void print_obs_result(void) {
 	unsigned int i;
 
 	printf("\r\n[Time:%lu Lat:%.5f Lon:%.5f]", unixtime, latitude, longitude);
 
-	total_observations = read_eeprom(0);
-	for (i = 1; i <= total_observations; i++) {
+	total_obs = read_eeprom(0);
+	for (i = 1; i <= total_obs; i++) {
 		unsigned int p = read_eeprom(i * 2 - 1);
 		unsigned int t = read_eeprom(i * 2);
 		printf("\r\n%u. Pressure:%u Temperature:%u", i, p, t);
 	}
 }
 
-void print_observation_count(void) {
-	total_observations = read_eeprom(0);
-	printf("\r\n%u", total_observations);
+void print_obs_count(void) {
+	total_obs = read_eeprom(0);
+	printf("\r\n%u", total_obs);
 }

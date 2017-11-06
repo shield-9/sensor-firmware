@@ -5,7 +5,7 @@
 #include "helper.h"
 
 int1 is_observing = FALSE;
-unsigned int total_observations = 0;
+unsigned int total_obs = 0;
 unsigned long long unixtime = 0;
 float latitude = 0.0, longitude = 0.0;
 
@@ -56,14 +56,14 @@ void process(char *cmd) {
 	} else if (is_equal(cmd, commands[1])) {  // @POS
 		char *lon;
 		divide_data(data, lon); // = lat, lon
-		set_observation_position(data, lon);
+		set_obs_position(data, lon);
 		printf("\r\n%.5f %.5f", latitude, longitude);
 	} else if (is_equal(cmd, commands[2])) {  // @SET
-		start_observation();
+		start_obs();
 	} else if (is_equal(cmd, commands[3])) {  // @GET
-		print_observation_result();
+		print_obs_results();
 	} else if (is_equal(cmd, commands[4])) {  // @NUM
-		print_observation_count();
+		print_obs_total();
 	} else if (is_equal(cmd, commands[5])) {  // @BAT
 		// TODO: Implement battery telemetry service.
 	}
