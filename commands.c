@@ -6,6 +6,7 @@ void exec_observe(void) {
 	if (obs_count >= 127) return;
 
 	unsigned int data;
+	increment_obs_count();
 
 	// Depth
 	set_adc_channel(1);
