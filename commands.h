@@ -6,7 +6,9 @@ void set_datetime(char *date, char *time);
 unsigned long long calc_unixtime(long int year, int month, int day, int hour,
 								int min, int sec);
 void set_obs_position(char *lat, char *lon);
+int1 toggle_obs_state(void);
 void start_obs(void);
+void stop_obs(void);
 void print_obs_result(void);
 void print_obs_count(void);
 

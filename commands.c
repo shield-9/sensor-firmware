@@ -51,7 +51,7 @@ void set_datetime(char *date, char *time) {
 }
 
 unsigned long long calc_unixtime(long int year, int month, int day, int hour,
-								int min, int sec) {
+								 int min, int sec) {
 	long int i;
 	unsigned long long total = 0;
 
@@ -82,32 +82,41 @@ unsigned long long calc_unixtime(long int year, int month, int day, int hour,
 }
 
 void set_obs_position(char *lat, char *lon) {
+	// TODO: Why we don't use atof() here?
 	latitude = str_to_float(lat);
 	longitude = str_to_float(lon);
 }
 
-void start_obs(void) {
-	is_observing = !is_observing;
-
+int1 toggle_obs_state(void) {
 	if (is_observing) {
-		total_obs = 0;
-		PORTC = 0x0B;
-
+		start_obs();
 		printf("\r\nObservation Started.");
 	} else {
-		PORTC = 0x03;
-
+		stop_obs();
 		printf("\r\nObservation Stopped.");
 	}
+
+	return is_observing;
+}
+
+void start_obs(void) {
+	is_observing = TRUE;
+
+	total_obs = 0;
+	PORTC = 0x0B;
+}
+
+void stop_obs(void) {
+	is_observing = FALSE;
+
+	PORTC = 0x03;
 }
 
 void print_obs_result(void) {
-	unsigned int i;
-
 	printf("\r\n[Time:%lu Lat:%.5f Lon:%.5f]", unixtime, latitude, longitude);
 
 	total_obs = read_eeprom(0);
-	for (i = 1; i <= total_obs; i++) {
+	for (unsigned int i = 1; i <= total_obs; i++) {
 		unsigned int p = read_eeprom(i * 2 - 1);
 		unsigned int t = read_eeprom(i * 2);
 		printf("\r\n%u. Pressure:%u Temperature:%u", i, p, t);

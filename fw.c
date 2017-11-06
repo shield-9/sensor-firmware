@@ -1,5 +1,5 @@
 #include <16F1825.h>
-#include <config.h>
+#include "config.h"
 //#include <input.c>
 #include "commands.h"
 #include "helper.h"
@@ -59,7 +59,7 @@ void process(char *cmd) {
 		set_obs_position(data, lon);
 		printf("\r\n%.5f %.5f", latitude, longitude);
 	} else if (is_equal(cmd, commands[2])) {  // @SET
-		start_obs();
+		toggle_obs_state();
 	} else if (is_equal(cmd, commands[3])) {  // @GET
 		print_obs_results();
 	} else if (is_equal(cmd, commands[4])) {  // @NUM
