@@ -113,13 +113,17 @@ void stop_obs(void) {
 }
 
 void print_obs_results(void) {
-	printf("\r\n[Time:%lu Lat:%.5f Lon:%.5f]", unixtime, latitude, longitude);
+	printf("\r\nTime, Lat, Lon, Total");
+	printf("\r\n%lu, %.5f, %.5f, %u", unixtime, latitude, longitude, obs_count);
 
+	printf("\r\nCount, Pressure, Temperature");
 	for (unsigned int i = 0; i < obs_count; i++) {
 		unsigned int p = get_obs_depth(i);
 		unsigned int t = get_obs_temp(i);
-		printf("\r\n%u. Pressure:%u Temperature:%u", i, p, t);
+		printf("\r\n%u, %u, %u", i, p, t);
 	}
+
+	printf("\r\nEnd of Results.");
 }
 
 void increment_obs_count(void) {
